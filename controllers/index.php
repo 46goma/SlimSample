@@ -2,9 +2,8 @@
 /**
  * トップ画面
  */
-$app->get('/(:page)', function ($page = 1) use ($app) {
+$app->get('/', function () use ($app) {
     require_once LIB_DIR . '/Session.php';
-    require_once MODELS_DIR . '/Content.php';
 
     $session = $app->factory->getSession();
     $user_info = array();
@@ -13,11 +12,8 @@ $app->get('/(:page)', function ($page = 1) use ($app) {
         $user_info['name'] = $session->get('user_name');
     }
 
-    $content = $app->factory->getContent();
-    $paginate = $content->paginate($page, CONTENTS_LIMIT);
-    $app->render('index.twig', array('user' => $user_info, 'contents' => $paginate));
-
-})->conditions(array('page' => '\d.*'));
+    $app->render('index.twig', array('user' => $user_info));
+});
 
 /*
  * エラー画面
